@@ -1,0 +1,139 @@
+import javax.swing.*;
+
+public class conjugarVerbo {
+
+	public static void main(String[] args) {
+		boolean confirm = false;
+		boolean confirm2 = false;
+		boolean conp1 = false;
+		String pronombres = " Yo Tu El Nosotros Vosotros Ellos ";
+		String terminaciones = "ar er ir ";
+		String tp = "o as a amos ais an ", tp2 = "o es e emos eis en ", tp3 = "o es e imos is en ";
+		String tps = "e aste o amos asteis aron ", tps2 = "i iste io imos isteis ieron ";
+		String tf = "are aras ara aremos areis aran ", tf2 = "ere eras era eremos ereis eran ",tf3 = "ire iras ira iremos ireis iran ";
+		String verbo, ter = "", ter2 = "", nc = "";
+		String total = "", fin = "";
+		String raiz = null;
+		String des = null;
+		String res = null;
+		String opcion = null;
+		String cj = null;
+		int inicioVerb, inicioV;
+		int i = 0, inicio = 0, j = 0, x = 0, p = 0;
+
+		do {
+			verbo = JOptionPane.showInputDialog(null, "Escriba el infinitivo de un verbo regular");
+			if (verbo == null) {
+				System.exit(p);
+			}
+			verbo = verbo.replace(" ", "");//eliminamos espacios
+			if ((!verbo.equals("")) && (verbo.length() > 3)) {
+				ter = verbo.substring(verbo.length() - 2, verbo.length());
+				for (i = 0; !confirm && i < terminaciones.length(); i++) {
+					if (terminaciones.charAt(i) == ' ') {
+						ter2 = terminaciones.substring(inicio, i);
+						ter2 = ter2.replace(" ", "");
+						inicio = i;
+					}
+					if (ter2.equals(ter)) {
+						confirm = true;
+					}
+				}
+				i = 0;
+				inicio = 0;
+			}
+			if (verbo.equals("")) {
+				JOptionPane.showMessageDialog(null, "Has dejado el campo vacio \n\t\tIntentalo de nuevo !!\n");
+			}
+			if (confirm) {
+				do {
+					opcion = JOptionPane.showInputDialog(null,"Elige el tiempo verbal a cual quieres conjugar el verbo:\n \tLetra \"A\" -> Para el Presente\n \tLetra \"B\" -> Para el Pretérito Perfecto\n \tLetra\"F\" -> Para el Futuro");
+					if(opcion==null){
+						System.exit(1);
+					}
+					opcion = opcion.replace(" ", "");// eliminamos espacios
+					opcion = opcion.toLowerCase();
+					nc="";
+					/*----- inicio opciones y valor de las conjugaciones-------*/
+					if (opcion.equals("a")) {
+						nc = "Presente";
+						if (ter.equals("ar")) {
+							cj = tp;
+						} else if (ter.equals("er")) {
+							cj = tp2;
+						} else if (ter.equals("ir")) {
+							cj = tp3;
+						}
+						confirm2 = true;
+					} else if (opcion.equals("b")) {
+						nc = "Pretérito Perfecto Simple";
+						if (ter.equals("ar")) {
+							cj = tps;
+						} else if (ter.equals("er") || ter.equals("ir")) {
+							cj = tps2;
+						}
+						confirm2 = true;
+					} else if (opcion.equals("f")) {
+						nc = "Futuro";
+						if (ter.equals("ar")) {
+							cj = tf;
+						} else if (ter.equals("er")) {
+							cj = tf2;
+						} else if (ter.equals("ir")) {
+							cj = tf3;
+						}
+						confirm2 = true;
+					}
+					/*------ fin inicio opciones------*/
+					inicio = 0;
+					j = 0;
+					i = 0;
+					x = 0;
+					if (confirm2) {
+						for (j = 0; j < pronombres.length(); j++) {
+							if (pronombres.charAt(j) == ' ') {
+								des = pronombres.substring(inicio, j);
+								des = des.replaceAll(" ", "");
+								des = des.concat(" ");
+								inicio = j;
+								conp1 = true;
+							}
+							if (conp1) {
+								do {
+
+									if (x < cj.length() && cj.charAt(x) == ' ') {
+										res = cj.substring(i, x);
+										res = res.replace(" ", "");
+										inicioV = 0;
+										inicioVerb = verbo.length();
+										raiz = verbo.substring(inicioV, inicioVerb - 2);
+										total = raiz.concat(res);
+										fin += des + total;
+										fin = fin.concat("\n");
+										i = x;
+									}
+									x++;
+								} while (x < cj.length() && cj.charAt(x) != ' ');
+							}
+							conp1 = false;
+						}
+						JOptionPane.showMessageDialog(null, "El verbo " + verbo + " conjugado en " + nc + ":\n" + fin);
+						p = JOptionPane.showConfirmDialog(null, "¿Quieres seguir conjugando el mismo verbo?", null,
+								JOptionPane.YES_NO_OPTION);
+						fin = "";
+					
+						confirm2 = false;
+					} else {
+						JOptionPane.showMessageDialog(null, "Debes elegir al menos una opción A,B o F");
+					}
+				} while (p == 0);
+			} else if(!confirm){
+				JOptionPane.showMessageDialog(null, "Por favor debe ingresar el infinitivo de un verbo regular");
+			}
+			if(confirm) {
+			p = JOptionPane.showConfirmDialog(null, "¿Quieres conjugar un verbo diferente?", null,JOptionPane.YES_NO_OPTION);
+			}
+			confirm = false;
+		} while (p == 0);
+	}
+}
